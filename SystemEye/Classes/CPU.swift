@@ -19,7 +19,7 @@ open class CPU: NSObject {
     //--------------------------------------------------------------------------
     
     /// Number of physical cores on this machine.
-    open static var physicalCores: Int {
+    public static var physicalCores: Int {
         get {
             return Int(System.hostBasicInfo.physical_cpu)
         }
@@ -27,7 +27,7 @@ open class CPU: NSObject {
     
     /// Number of logical cores on this machine. Will be equal to physicalCores
     /// unless it has hyper-threading, in which case it will be double.
-    open static var logicalCores: Int {
+    public static var logicalCores: Int {
         get {
             return Int(System.hostBasicInfo.logical_cpu)
         }
@@ -39,7 +39,7 @@ open class CPU: NSObject {
     
     ///  Get CPU usage of hole system (system, user, idle, nice). Determined by the delta between
     ///  the current and last call.
-    open static func systemUsage() -> (system: Double,
+    public static func systemUsage() -> (system: Double,
                                          user: Double,
                                          idle: Double,
                                          nice: Double) {
@@ -134,15 +134,15 @@ open class CPU: NSObject {
         }
         
         let krsize = count * UInt32.init(MemoryLayout<thread_t>.size)
-        let kr = vm_deallocate(mach_task_self_, vm_address_t(array.pointee), vm_size_t(krsize));
+        _ = vm_deallocate(mach_task_self_, vm_address_t(array.pointee), vm_size_t(krsize));
         return threads_act
     }
     
     private class func threadBasicInfos() -> [thread_basic_info]  {
         var result = [thread_basic_info]()
         
-        var thinfo : thread_info_t = thread_info_t.allocate(capacity: Int(THREAD_INFO_MAX))
-        var thread_info_count = UnsafeMutablePointer<mach_msg_type_number_t>.allocate(capacity: 128)
+        let thinfo : thread_info_t = thread_info_t.allocate(capacity: Int(THREAD_INFO_MAX))
+        let thread_info_count = UnsafeMutablePointer<mach_msg_type_number_t>.allocate(capacity: 128)
         var basic_info_th: thread_basic_info_t? = nil
         
         for act_t in self.threadActPointers() {
@@ -166,8 +166,8 @@ open class CPU: NSObject {
     //TODO: this function is used for get cpu usage of all thread,and this is in developing
     private class func threadIdentifierInfos() -> [thread_identifier_info] {
         var result = [thread_identifier_info]()
-        var thinfo : thread_info_t = thread_info_t.allocate(capacity: Int(THREAD_INFO_MAX))
-        var thread_info_count = UnsafeMutablePointer<mach_msg_type_number_t>.allocate(capacity: 128)
+        let thinfo : thread_info_t = thread_info_t.allocate(capacity: Int(THREAD_INFO_MAX))
+        let thread_info_count = UnsafeMutablePointer<mach_msg_type_number_t>.allocate(capacity: 128)
         var identifier_info_th: thread_identifier_info_t? = nil
         
         for act_t in self.threadActPointers() {

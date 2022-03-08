@@ -28,6 +28,7 @@ SystemEye is a system monitor,automatic catch the infomation of cpu,memory,fps,n
   s.social_media_url = 'https://twitter.com/zixun_'
 
   s.ios.deployment_target = '8.0'
+  s.swift_version = '5.0'
 
   s.source_files = 'SystemEye/Classes/**/*'
 end
